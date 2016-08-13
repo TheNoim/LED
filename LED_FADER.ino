@@ -96,13 +96,14 @@ class LED {
       analogWrite(pins[0], this->r);
       analogWrite(pins[1], this->g);
       analogWrite(pins[2], this->b);
+      cout << "R" << this->r << "G" << this->g << "B" << this->b << endl; 
       return;
     }
     void ledinit(int p[]) {
       this->r = random(1, 255);
       this->g = random(1, 255);
       this->b = random(1, 255);
-      for (int i = 1; i < 3; i++) {
+      for (int i = 0; i < 3; i++) {
         pins[i] = p[i];
         pinMode(pins[i], OUTPUT);
       }
@@ -114,6 +115,10 @@ class LED {
       newTask();
       newGoal();
       runTask();
+      cout << "Pin0=" << pins[0] << endl;
+      cout << "Pin1=" << pins[1] << endl;
+      cout << "Pin2=" << pins[2] << endl;
+      cout << "Pin3=" << pins[3] << endl;
       return;
     }
     void redefine(int rr, int gg, int bb) {
@@ -122,20 +127,60 @@ class LED {
       b = bb;
       return;
     }
+    /*
+    ~LED() { delete [] pins, r, g, b, task, taskgoal; }
+    LED &operator=(LED const& other) 
+    {
+        LED copy(other);
+        swap(*this, copy);
+        return *this;
+    }
+
+    LED(LED&& that) noexcept
+        : pins(nullptr)
+        , r(0)
+        , g(0)
+        , b(0)
+        , task(0)
+        , taskgoal(0)
+    {
+        swap(*this, that);
+    }
+
+    LED& operator=(LED&& that) noexcept
+    {
+        swap(*this, that);
+        return *this;
+    }
+
+    friend void swap(LED& lhs, LED& rhs) noexcept
+    {
+        std::swap(lhs.pins, rhs.pins);
+        std::swap(lhs.r, rhs.r);
+        std::swap(lhs.g, rhs.g);
+        std::swap(lhs.b, rhs.b);
+        std::swap(lhs.task, rhs.task);
+        std::swap(lhs.taskgoal, rhs.taskgoal);
+    }
+    */
 };
-std::vector< LED >leds;
+//std::vector< LED >leds;
+LED ll1;
 
 void setup() {
   Serial.begin(9600);
   LED l1;
   int l1pins[4] = {11, 9, 8, 10};
   l1.ledinit(l1pins);
-  leds.push_back(l1);
+  ll1 = l1;
+  //leds.push_back(std::move(l1));
 }
 
 void loop() {
+  /*
   for (LED &l : leds) {
     l.runTask();
-  }
-  delay(100);
+  }*/
+  ll1.runTask();
+  delay(30);
 }
