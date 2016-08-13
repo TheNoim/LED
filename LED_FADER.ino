@@ -14,20 +14,20 @@ bool randomBool() {
   return rand() % 2 == 1;
 }
 class LED {
-  public:
     int pins[4];
-    int r = 0;
-    int g = 0;
-    int b = 0;
-    int task = 1;
-    int taskgoal = 255;
+    int r;
+    int g;
+    int b;
+    int task;
+    int taskgoal;
+  public:
     void newTask() {
-      int t = random(1, 3);
+      int t = random(1, 4);
       this->task = t;
       return;
     }
     void newGoal() {
-      int t = random(1, 255);
+      int t = random(1, 256);
       this->taskgoal = t;
       return;
     }
@@ -55,7 +55,6 @@ class LED {
       if (taskFinished()) {
         newTask();
         newGoal();
-        cout << "New Task and new Goal.\n";
       }
       int current;
       switch (task) {
@@ -72,31 +71,24 @@ class LED {
       if (current < taskgoal) {
         switch (task) {
           case 1:
-            cout << r << "+1" << "\n";
             this->redefine(this->r + 1, this->g, this->b);
-            cout << r << "+1" << "\n";
             break;
           case 2:
-            cout << g << "+1" << "\n";
             this->redefine(this->g, this->g + 1, this->b);
             break;
           case 3:
-            cout << b << "+1" << "\n";
             this->redefine(this->r, this->g, this->b + 1);
             break;
         }
       } else if (current > taskgoal) {
         switch (task) {
           case 1:
-            cout << r << "-1" << "\n";
             this->redefine(this->r - 1, this->g, this->b);
             break;
           case 2:
-            cout << g << "-1" << "\n";
             this->redefine(this->r, this->g - 1, this->b);
             break;
           case 3:
-            cout << b << "-1" << "\n";
             this->redefine(this->r, this->g, this->b - 1);
             break;
         }
@@ -124,11 +116,11 @@ class LED {
       runTask();
       return;
     }
-    void redefine(int rr, int gg, int bb){
-        r = rr;
-        g = gg;
-        b = bb;
-        return;
+    void redefine(int rr, int gg, int bb) {
+      r = rr;
+      g = gg;
+      b = bb;
+      return;
     }
 };
 std::vector< LED >leds;
@@ -142,10 +134,8 @@ void setup() {
 }
 
 void loop() {
-  for (LED l : leds) {
+  for (LED &l : leds) {
     l.runTask();
-    l.redefine(20, 40, 100);
-    cout << "Run Task" << "\n";
   }
   delay(100);
 }
